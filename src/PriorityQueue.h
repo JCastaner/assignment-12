@@ -1,3 +1,4 @@
+//  Joseph Castaner
 //
 //  PriorityQueue.h
 //  
@@ -61,6 +62,8 @@ namespace csi281 {
         // NOTE: Our heap starts at 0, not 1
         T peek() {
             // YOUR CODE HERE
+
+			return heap[0];
         }
         
         // Remove the next element (max element) in the heap and return it
@@ -71,6 +74,13 @@ namespace csi281 {
         // after a pop.
         T pop() {
             // YOUR CODE HERE
+
+			T maximum = peek();
+			heap[0] = heap[heapSize - 1];
+			heapSize -= 1;
+			maxHeapify(0);
+
+			return maximum;
         }
         
         // Put a new element into the priority queue
@@ -83,6 +93,18 @@ namespace csi281 {
         // the end of the vector heap
         void push(T key) {
             // YOUR CODE HERE
+
+			int i = heapSize;
+			heapSize = i + 1;
+
+			heap.push_back(key);
+
+			while (i > 0 && heap[parent(i)] < heap[i])
+			{
+				swap(heap[i], heap[parent(i)]);
+
+				i = parent(i);
+			}
         }
         
         // How many items are in the priority queue?
@@ -105,6 +127,28 @@ namespace csi281 {
         // NOTE: Macros left() and right() are defined at the top of this file
         void maxHeapify(int i) {
             // YOUR CODE HERE
+
+			int largest = 0;
+
+			if (left(i) <= heapSize && heap[left(i)] > heap[i])
+			{
+				largest = left(i);
+			}
+			else
+			{
+				largest = i;
+			}
+
+			if (right(i) <= heapSize && heap[right(i)] > heap[largest])
+			{
+				largest = right(i);
+			}
+
+			if (largest != i)
+			{
+				swap(heap[i], heap[largest]);
+				maxHeapify(largest);
+			}
         }
         
         vector<T> heap;
